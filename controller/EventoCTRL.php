@@ -11,6 +11,19 @@ require_once '../../model/Conexao.php';
  */
 class EventoCTRL
 {
+    private $conex;
+    private $connection;
+
+    /**
+     * EventoCTRL constructor.
+     * @param $connection
+     */
+    public function __construct()
+    {
+        $this->conex  = new Conexao();
+        $this->connection = $this->conex->getConnection();
+    }
+
 
     public function inserir(Evento $evento)
     {
@@ -19,14 +32,10 @@ class EventoCTRL
         $data = $evento->getData();
         $ativo = $evento->getAtivo();
 
-        $conex  = new Conexao();
-        $connection = $conex->getConnection();
-        $connection->exec("INSERT INTO eventos (titulo,descricao,data,ativo) VALUES ('$titulo','$descricao','$data','$ativo')");
+        $this->connection->exec("INSERT INTO eventos (titulo,descricao,data,ativo) VALUES ('$titulo','$descricao','$data','$ativo')");
     }
 
     public function show(){
-        $conex  = new Conexao();
-        $connection = $conex->getConnection();
-        return $connection->query("SELECT * FROM eventos WHERE ativo = 1");
+        return $this->connection->query("SELECT * FROM eventos WHERE ativo = 1");
     }
 }
