@@ -26,6 +26,16 @@ class UsuarioCTRL
     {
         $login = $usuario->getLogin();
         $senha = $usuario->getSenha();
-        return $this->connection->query("SELECT * FROM usuarios");
+        return $this->connection->query("SELECT * FROM usuarios WHERE login = '$login' AND senha = '$senha'");
     }
+
+    public function atualizaAtivo(Usuario $usuario){
+        $userCod = $usuario->getUsuario();
+        $this->connection->query("UPDATE usuarios SET ativo = 1 WHERE usuario = $userCod");
+    }
+
+    public function desativaUsuario($userCod){
+        $this->connection->query("UPDATE usuarios SET ativo = 0 WHERE usuario = $userCod");
+    }
+
 }

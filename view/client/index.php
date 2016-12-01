@@ -1,7 +1,7 @@
 <?php
     require_once '../../model/Evento.php';
     require_once '../../model/Usuario.php';
-    require_once './Fachada.php';
+    require_once '../Fachada.php';
 
     $fachada = new Fachada();
 ?>
@@ -88,19 +88,16 @@
 					            	<p><input type="password" name="Senha" class="form-control" placeholder="Senha"></p>
 				            	</li>
 				            	<li role="separator" class="divider"></li>
-				            	<li class="text-center"><button name="logar" class="btn btn-default" style="background-color: #292929; color: #fff">Login</button></li>
+				            	<li class="text-center"><input type="submit" value="Login" name="logar" class="btn btn-default" style="background-color: #292929; color: #fff"></li>
 	          				</form>
                             <?php
-                                @$logar   = $_POST['logar'];
+                                @$logar = $_POST['logar'];
                                 if(isset($logar)) {
                                     $login = $_POST['Login'];
                                     $senha = $_POST['Senha'];
                                     if((!empty($login)) && (!empty($senha))) {
                                         $usuario = new Usuario($login, $senha);
-                                        $usuarioCtrl = new UsuarioCTRL();
-                                        //$fachada->autenticaUsuario($usuario);
-                                        $res = $usuarioCtrl->autenticacao($usuario);
-                                        var_dump($res[0]);
+                                        $fachada->autenticaUsuario($usuario);
                                     }
                                 }
                             ?>

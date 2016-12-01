@@ -1,3 +1,21 @@
+<?php
+    session_start("accessProfessor");
+
+    if( !isset($_SESSION['cod']) or !isset($_SESSION['login']) or !isset($_SESSION['senha']) or !isset($_SESSION['type_user']) or !isset($_SESSION['nome']) or !isset($_SESSION['contato']) or !isset($_SESSION['ativo']) ){
+        echo "<meta HTTP-EQUIV='Refresh' CONTENT='0;URL=http://localhost:8080/unipe.e3.sisedu/view/client/'>";
+    } else {
+    @$actionLogout = $_GET['logout'];
+    if($actionLogout == true) {
+        $codUser = $_SESSION['cod'];
+        require_once '../../../model/Conexao.php';
+        $conex  = new Conexao();
+        $connection = $conex->getConnection();
+        $connection->query("UPDATE usuarios SET ativo = 0 WHERE usuario = $codUser");
+        session_destroy();
+        echo "<meta HTTP-EQUIV='Refresh' CONTENT='0;URL=http://localhost:8080/unipe.e3.sisedu/view/client/'>";
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,11 +60,11 @@
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><b>#Escola Digital</b></a>
+            <a href="index.php" class="logo"><b>#Escola Digital</b></a>
             <!--logo end-->
             <div class="top-menu">
               <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li><a class="logout" href="index.php?logout=true">Logout</a></li>
               </ul>
             </div>
         </header>
@@ -62,10 +80,10 @@
               <ul class="sidebar-menu" id="nav-accordion">
 
                 <p class="centered"><a href="profile.html"><img src="../assets/img/profile-icon-9.png" class="img-circle" width="60"></a></p>
-                  <h5 class="centered">Professor</h5>
+                  <h5 class="centered"><?php echo $_SESSION['nome']; ?></h5>
                     
                   <li class="mt">
-                      <a class="active" href="index.html">
+                      <a class="active" href="index.php">
                           <i class="fa fa-home"></i>
                           <span>Início</span>
                       </a>
@@ -266,3 +284,4 @@
 
   </body>
 </html>
+<?php } ?>

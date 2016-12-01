@@ -1,3 +1,22 @@
+<?php
+    session_start("accessAluno");
+
+    if( !isset($_SESSION['cod']) or !isset($_SESSION['login']) or !isset($_SESSION['senha']) or !isset($_SESSION['type_user']) or !isset($_SESSION['nome']) or !isset($_SESSION['contato']) or !isset($_SESSION['ativo']) ){
+        //echo "DEU MERDA";
+        echo "<meta HTTP-EQUIV='Refresh' CONTENT='0;URL=http://localhost:8080/unipe.e3.sisedu/view/client/'>";
+    } else {
+    @$actionLogout = $_GET['logout'];
+    if($actionLogout == true) {
+        $codUser = $_SESSION['cod'];
+        require_once '../../../model/Conexao.php';
+        $conex  = new Conexao();
+        $connection = $conex->getConnection();
+        $connection->query("UPDATE usuarios SET ativo = 0 WHERE usuario = $codUser");
+        session_destroy();
+        echo "<meta HTTP-EQUIV='Refresh' CONTENT='0;URL=http://localhost:8080/unipe.e3.sisedu/view/client/'>";
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -47,7 +66,7 @@
             <a href="#"><img src="../assets/img/logo_escoledigital09.png"></a>
             <!--logo end-->
               <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li><a class="logout" href="index.php?logout=true">Logout</a></li>
               </ul>
             </div>
         </header>
@@ -63,10 +82,10 @@
               <ul class="sidebar-menu" id="nav-accordion">
 
                 <p class="centered"><a href="profile.html"><img src="../assets/img/profile-icon-9.png" class="img-circle" width="60"></a></p>
-                  <h5 class="centered">Administrador</h5>
+                  <h5 class="centered"><?php echo $_SESSION['nome']; ?></h5>
                     
                   <li class="mt">
-                      <a class="active" href="index.html">
+                      <a class="active" href="index.php">
                           <i class="fa fa-home"></i>
                           <span>Início</span>
                       </a>
@@ -74,24 +93,11 @@
 
                   <li class="sub-menu">
                       <a href="javascript:;" >
-                          <i class="fa fa-tasks"></i>
-                          <span>Cadastros</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="form_component.html">Administrador</a></li>
-						  <li><a  href="form_component_prof.html">Professor</a></li>
-						  <li><a  href="form_component_eve.html">Eventos</a></li>
-
-                  </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
                           <i class="fa fa-th"></i>
                           <span>Relatórios</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="responsive_table.html">Tabela Administrador</a></li>
-						  <li><a  href="responsive_table_prof.html">Tabela Professor</a></li>
-						  <li><a  href="responsive_table_eve.html">Tabela Eventos</a></li>
+                          <li><a  href="relatorio.html">Notas/Faltas</a></li>
                       </ul>
                   </li>
 
@@ -271,3 +277,4 @@
 
   </body>
 </html>
+<?php } ?>
